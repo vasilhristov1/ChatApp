@@ -35,7 +35,7 @@ export function LoginPage() {
                 currentUser
             );
 
-            navigate("/");
+            navigate("/chat");
         } catch {
             setError("Invalid username/email or password.");
         } finally {
@@ -45,32 +45,47 @@ export function LoginPage() {
 
     return (
         <div style={styles.page}>
+            <Link to="/" style={styles.backButton}>
+                ← Back
+            </Link>
+
             <form onSubmit={handleSubmit} style={styles.card}>
-                <h1>Login</h1>
+                <h1 style={styles.title}>Welcome back</h1>
+
+                <p style={styles.subtitle}>Sign in to your account</p>
 
                 {error && <p style={styles.error}>{error}</p>}
 
-                <input
-                    placeholder="Email or username"
-                    value={emailOrUsername}
-                    onChange={(e) => setEmailOrUsername(e.target.value)}
-                    style={styles.input}
-                />
+                <label style={styles.label}>
+                    Email or username
+                    <input
+                        placeholder="you@example.com"
+                        value={emailOrUsername}
+                        onChange={(e) => setEmailOrUsername(e.target.value)}
+                        style={styles.input}
+                    />
+                </label>
 
-                <input
-                    placeholder="Password"
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    style={styles.input}
-                />
+                <label style={styles.label}>
+                    Password
+                    <input
+                        placeholder="••••••••"
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        style={styles.input}
+                    />
+                </label>
 
                 <button disabled={isSubmitting} style={styles.button}>
-                    {isSubmitting ? "Logging in..." : "Login"}
+                    {isSubmitting ? "Signing in..." : "Sign In"}
                 </button>
 
-                <p>
-                    No account? <Link to="/register">Register</Link>
+                <p style={styles.footerText}>
+                    Don't have an account?{" "}
+                    <Link to="/register" style={styles.link}>
+                        Sign up
+                    </Link>
                 </p>
             </form>
         </div>
@@ -80,35 +95,101 @@ export function LoginPage() {
 const styles: Record<string, React.CSSProperties> = {
     page: {
         minHeight: "100vh",
+        background:
+            "radial-gradient(circle at top, rgba(124,58,237,0.14), transparent 34%), #08090d",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background: "#f3f4f6",
+        padding: "24px",
+        position: "relative",
+    },
+    backButton: {
+        position: "absolute",
+        top: 24,
+        left: 24,
+        color: "#d4d4d8",
+        textDecoration: "none",
+        fontWeight: 700,
+        border: "1px solid rgba(255,255,255,0.1)",
+        background: "rgba(255,255,255,0.04)",
+        padding: "10px 14px",
+        borderRadius: 999,
     },
     card: {
-        width: 380,
-        padding: 32,
-        background: "white",
-        borderRadius: 12,
-        boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
+        width: "100%",
+        maxWidth: 760,
+        padding: "64px 56px",
+        background: "rgba(15, 15, 20, 0.86)",
+        border: "1px solid rgba(255,255,255,0.1)",
+        borderRadius: 28,
+        boxShadow: "0 30px 100px rgba(0,0,0,0.45)",
         display: "flex",
         flexDirection: "column",
-        gap: 16,
+        gap: 22,
+    },
+    title: {
+        margin: 0,
+        color: "white",
+        textAlign: "center",
+        fontSize: "clamp(38px, 6vw, 56px)",
+        lineHeight: 1,
+        letterSpacing: "-0.04em",
+        fontWeight: 900,
+    },
+    subtitle: {
+        margin: "0 0 36px",
+        color: "#a1a1aa",
+        textAlign: "center",
+        fontSize: "clamp(22px, 3vw, 30px)",
+    },
+    label: {
+        color: "white",
+        fontWeight: 800,
+        fontSize: 20,
+        display: "flex",
+        flexDirection: "column",
+        gap: 10,
     },
     input: {
-        padding: 12,
-        borderRadius: 8,
-        border: "1px solid #d1d5db",
+        height: 64,
+        padding: "0 22px",
+        borderRadius: 16,
+        border: "1px solid rgba(255,255,255,0.14)",
+        background: "#090a0f",
+        color: "white",
+        fontSize: 22,
+        outline: "none",
     },
     button: {
-        padding: 12,
-        borderRadius: 8,
+        height: 66,
+        marginTop: 12,
+        borderRadius: 16,
         border: "none",
-        background: "#2563eb",
+        background: "linear-gradient(135deg, #7c3aed, #6366f1)",
         color: "white",
         cursor: "pointer",
+        fontSize: 24,
+        fontWeight: 800,
+        boxShadow: "0 18px 40px rgba(124,58,237,0.35)",
+    },
+    footerText: {
+        margin: "28px 0 0",
+        textAlign: "center",
+        color: "#a1a1aa",
+        fontSize: 22,
+    },
+    link: {
+        color: "#8b5cf6",
+        textDecoration: "none",
+        fontWeight: 700,
     },
     error: {
-        color: "#dc2626",
+        margin: 0,
+        color: "#fecaca",
+        background: "rgba(220,38,38,0.16)",
+        border: "1px solid rgba(248,113,113,0.3)",
+        padding: "12px 14px",
+        borderRadius: 12,
+        textAlign: "center",
     },
 };
