@@ -11,8 +11,6 @@ import { IncomingCallPopup } from "../components/IncomingCallPopup";
 import { VideoCallModal } from "../components/VideoCallModal";
 import { useCallConnection } from "../hooks/chat/useCallConnection";
 import { messagesApi } from "../api/messagesApi";
-import { API_URL } from "../config";
-import "./ChatPage.css";
 
 export function ChatPage() {
     const currentUser = useAuthStore((state) => state.user);
@@ -21,12 +19,9 @@ export function ChatPage() {
     const [selectedConversation, setSelectedConversation] =
         useState<ConversationResponse | null>(null);
 
-    const [isMobileChatOpen, setIsMobileChatOpen] = useState(false);
-
     const fileInputRef = useRef<HTMLInputElement | null>(null);
-    const messagesEndRef = useRef<HTMLDivElement | null>(null);
-
     const [isUploading, setIsUploading] = useState(false);
+
     const [messageText, setMessageText] = useState("");
     const [userSearch, setUserSearch] = useState("");
     const [isSending, setIsSending] = useState(false);
@@ -43,6 +38,8 @@ export function ChatPage() {
             isOptimistic: true;
         }[]
     >([]);
+
+    const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
     const {
         data: conversations = [],
@@ -66,8 +63,6 @@ export function ChatPage() {
                 if (message.conversationId === selectedConversation?.id) {
                     await refetchMessages();
                 }
-
-                await refetchConversations();
             },
             onConversationUpdated: async () => {
                 await refetchConversations();
@@ -97,18 +92,6 @@ export function ChatPage() {
         currentUserId: currentUser?.id,
     });
 
-    const selectedOtherMember = useMemo(() => {
-        if (!selectedConversation || !currentUser) {
-            return null;
-        }
-
-        return (
-            selectedConversation.members.find(
-                (member) => member.userId !== currentUser.id
-            ) ?? null
-        );
-    }, [selectedConversation, currentUser]);
-
     const selectedTitle = useMemo(() => {
         if (!selectedConversation) {
             return "Select a conversation";
@@ -118,8 +101,12 @@ export function ChatPage() {
             return selectedConversation.name;
         }
 
-        return selectedOtherMember?.username ?? "Conversation";
-    }, [selectedConversation, selectedOtherMember]);
+        const otherMember = selectedConversation.members.find(
+            (member) => member.userId !== currentUser?.id
+        );
+
+        return otherMember?.username ?? "Conversation";
+    }, [selectedConversation, currentUser?.id]);
 
     const visibleMessages = useMemo(() => {
         return [...messages, ...optimisticMessages].filter(
@@ -139,17 +126,12 @@ export function ChatPage() {
         return otherMember?.userId ?? null;
     };
 
-    const getAvatarUrl = (avatarUrl?: string | null) => {
-        return avatarUrl ? `${API_URL}${avatarUrl}` : null;
-    };
-
     const startDirectConversation = async (userId: string) => {
         const conversation = await conversationsApi.createDirectConversation({
             otherUserId: userId,
         });
 
         setSelectedConversation(conversation);
-        setIsMobileChatOpen(true);
         setUserSearch("");
 
         await refetchConversations();
@@ -280,58 +262,52 @@ export function ChatPage() {
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, [visibleMessages.length, selectedConversation?.id]);
+    }, [messages.length, selectedConversation?.id]);
 
     return (
         <>
-            <div className="chat-shell">
-                <aside
-                    className={`chat-sidebar ${
-                        isMobileChatOpen ? "mobile-hidden" : ""
-                    }`}
-                >
-                    <div className="chat-sidebar-brand">
-                        <div className="chat-brand-mark">
-                            {currentUser?.username?.[0]?.toUpperCase() ?? "C"}
-                        </div>
-
-                        <div>
-                            <div className="chat-brand-title">ChatApp</div>
-                            <div className="chat-brand-status">
-                                {isConnected ? "Live connection" : "Offline"}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="chat-sidebar-top">
+            <div style={styles.container}>
+                <aside style={styles.sidebar}>
+                    <div style={styles.searchBox}>
                         <input
-                            placeholder="Search messages or users..."
+                            placeholder="Search users..."
                             value={userSearch}
                             onChange={(event) => setUserSearch(event.target.value)}
-                            className="chat-search"
+                            style={styles.input}
                         />
 
                         {searchResults.length > 0 && (
-                            <div className="chat-search-results">
+                            <div style={styles.searchResults}>
                                 {searchResults.map((user) => (
                                     <button
                                         key={user.id}
                                         onClick={() => startDirectConversation(user.id)}
-                                        className="chat-search-result"
+                                        style={styles.searchResultItem}
                                     >
                                         <strong>{user.username}</strong>
-                                        <span>{user.email}</span>
+                                        <span style={styles.smallText}>{user.email}</span>
                                     </button>
                                 ))}
                             </div>
                         )}
                     </div>
 
-                    <div className="chat-list">
-                        {isLoadingConversations && (
-                            <p className="chat-loading">Loading conversations...</p>
-                        )}
+                    <div style={styles.sidebarHeader}>
+                        <h3>Conversations</h3>
+                        <span
+                            style={{
+                                ...styles.connectionBadge,
+                                background: isConnected ? "#dcfce7" : "#fee2e2",
+                                color: isConnected ? "#166534" : "#991b1b",
+                            }}
+                        >
+                            {isConnected ? "Live" : "Offline"}
+                        </span>
+                    </div>
 
+                    {isLoadingConversations && <p>Loading...</p>}
+
+                    <div style={styles.conversationList}>
                         {conversations.map((conversation) => {
                             const otherMember = conversation.members.find(
                                 (member) => member.userId !== currentUser?.id
@@ -342,65 +318,31 @@ export function ChatPage() {
                                     ? conversation.name
                                     : otherMember?.username ?? "Conversation";
 
-                            const avatarUrl = getAvatarUrl(otherMember?.avatarUrl);
                             const isSelected = selectedConversation?.id === conversation.id;
 
                             return (
                                 <button
                                     key={conversation.id}
-                                    onClick={() => {
-                                        setSelectedConversation(conversation);
-                                        setIsMobileChatOpen(true);
+                                    onClick={() => setSelectedConversation(conversation)}
+                                    style={{
+                                        ...styles.conversationItem,
+                                        background: isSelected ? "#e0ecff" : "white",
                                     }}
-                                    className={`chat-conversation ${
-                                        isSelected ? "active" : ""
-                                    }`}
                                 >
-                                    <div className="chat-avatar-wrap">
-                                        {avatarUrl ? (
-                                            <img
-                                                src={avatarUrl}
-                                                alt={title ?? "User"}
-                                                className="chat-avatar"
-                                            />
-                                        ) : (
-                                            <div className="chat-avatar-placeholder">
-                                                {title?.[0]?.toUpperCase() ?? "C"}
-                                            </div>
-                                        )}
-
+                                    <div style={styles.conversationHeader}>
+                                        <strong>{title}</strong>
                                         {otherMember?.isOnline && (
-                                            <span className="chat-online-dot" />
+                                            <span style={styles.onlineDot}>●</span>
                                         )}
                                     </div>
 
-                                    <div className="chat-conversation-body">
-                                        <div className="chat-conversation-name">
-                                            {title}
-                                        </div>
-
-                                        <div className="chat-conversation-last">
-                                            {conversation.lastMessage ??
-                                                "No messages yet"}
-                                        </div>
-                                    </div>
-
-                                    <div className="chat-conversation-meta">
-                                        {conversation.lastMessageAt && (
-                                            <span>
-                                                {new Date(
-                                                    conversation.lastMessageAt
-                                                ).toLocaleTimeString([], {
-                                                    hour: "2-digit",
-                                                    minute: "2-digit",
-                                                })}
-                                            </span>
-                                        )}
+                                    <div style={styles.conversationFooter}>
+                                        <span style={styles.lastMessage}>
+                                            {conversation.lastMessage ?? "No messages yet"}
+                                        </span>
 
                                         {conversation.unreadCount > 0 && (
-                                            <span className="chat-unread">
-                                                {conversation.unreadCount}
-                                            </span>
+                                            <span style={styles.unreadBadge}>{conversation.unreadCount}</span>
                                         )}
                                     </div>
                                 </button>
@@ -409,170 +351,104 @@ export function ChatPage() {
                     </div>
                 </aside>
 
-                <section
-                    className={`chat-main ${
-                        !isMobileChatOpen ? "mobile-hidden" : ""
-                    }`}
-                >
-                    <header className="chat-header">
-                        <div className="chat-header-user">
-                            <button
-                                className="mobile-back"
-                                onClick={() => setIsMobileChatOpen(false)}
-                            >
-                                ←
-                            </button>
-
-                            {selectedConversation && (
-                                <div className="chat-avatar-wrap">
-                                    {getAvatarUrl(selectedOtherMember?.avatarUrl) ? (
-                                        <img
-                                            src={getAvatarUrl(
-                                                selectedOtherMember?.avatarUrl
-                                            )!}
-                                            alt={selectedTitle}
-                                            className="chat-header-avatar"
-                                        />
-                                    ) : (
-                                        <div className="chat-header-avatar-placeholder">
-                                            {selectedTitle[0]?.toUpperCase()}
-                                        </div>
-                                    )}
-
-                                    {selectedOtherMember?.isOnline && (
-                                        <span className="chat-online-dot" />
-                                    )}
-                                </div>
-                            )}
-
-                            <div>
-                                <div className="chat-header-name">{selectedTitle}</div>
-                                <div className="chat-header-status">
-                                    {selectedConversation
-                                        ? selectedOtherMember?.isOnline
-                                            ? "Online"
-                                            : "Offline"
-                                        : "Choose a conversation"}
-                                </div>
-                            </div>
-                        </div>
+                <section style={styles.chatPanel}>
+                    <header style={styles.chatHeader}>
+                        <h2>{selectedTitle}</h2>
 
                         {selectedConversation && (
-                            <div className="chat-header-actions">
-                                <button className="chat-icon-button">☎</button>
-
-                                <button
-                                    onClick={handleStartVideoCall}
-                                    disabled={isStartingCall || isCallOpen}
-                                    className="chat-icon-button"
-                                    title="Video call"
-                                >
-                                    {isStartingCall ? "…" : "▣"}
-                                </button>
-
-                                <button className="chat-icon-button">⋮</button>
-                            </div>
+                            <button
+                                onClick={handleStartVideoCall}
+                                disabled={isStartingCall || isCallOpen}
+                                style={{
+                                    ...styles.callButton,
+                                    opacity: isStartingCall || isCallOpen ? 0.6 : 1,
+                                    cursor: isStartingCall || isCallOpen ? "not-allowed" : "pointer",
+                                }}
+                            >
+                                {isStartingCall ? "Calling..." : "Video Call"}
+                            </button>
                         )}
                     </header>
 
-                    <div className="chat-messages">
+                    <div style={styles.messagesArea}>
                         {!selectedConversation && (
-                            <div className="chat-empty">
-                                <h2>Welcome to ChatApp</h2>
-                                <p>Select a conversation or search for a user.</p>
-                            </div>
+                            <p style={styles.emptyState}>
+                                Choose a conversation or search a user.
+                            </p>
                         )}
 
                         {selectedConversation && isLoadingMessages && (
-                            <p className="chat-loading">Loading messages...</p>
+                            <p>Loading messages...</p>
                         )}
 
                         {selectedConversation &&
                             !isLoadingMessages &&
                             visibleMessages.map((message) => {
                                 const isMine = message.senderId === currentUser?.id;
-                                const senderAvatarUrl = getAvatarUrl(
-                                    message.senderAvatarUrl
-                                );
 
                                 return (
                                     <div
                                         key={message.id}
-                                        className={`message-row ${
-                                            isMine ? "mine" : "other"
-                                        }`}
+                                        style={{
+                                            ...styles.messageRow,
+                                            justifyContent: isMine ? "flex-end" : "flex-start",
+                                        }}
                                     >
-                                        {!isMine && (
-                                            <div className="message-avatar-wrap">
-                                                {senderAvatarUrl ? (
-                                                    <img
-                                                        src={senderAvatarUrl}
-                                                        alt={message.senderUsername}
-                                                        className="message-avatar"
-                                                    />
-                                                ) : (
-                                                    <div className="message-avatar-placeholder">
-                                                        {message.senderUsername[0]?.toUpperCase()}
-                                                    </div>
-                                                )}
-                                            </div>
-                                        )}
-
                                         <div
-                                            className={`message-bubble ${
-                                                isMine ? "mine" : "other"
-                                            }`}
+                                            style={{
+                                                ...styles.messageBubble,
+                                                background: isMine ? "#2563eb" : "#e5e7eb",
+                                                color: isMine ? "white" : "#111827",
+                                            }}
                                         >
                                             {!isMine && (
-                                                <div className="message-sender">
-                                                    {message.senderUsername}
+                                                <div style={styles.messageSenderRow}>
+                                                    {message.senderAvatarUrl ? (
+                                                        <img
+                                                            src={`https://localhost:7039${message.senderAvatarUrl}`}
+                                                            alt={message.senderUsername}
+                                                            style={styles.smallAvatar}
+                                                        />
+                                                    ) : (
+                                                        <div style={styles.smallAvatarPlaceholder}>
+                                                            {message.senderUsername[0]?.toUpperCase()}
+                                                        </div>
+                                                    )}
+
+                                                    <span style={styles.messageSender}>{message.senderUsername}</span>
                                                 </div>
                                             )}
 
-                                            {message.content && (
-                                                <div className="message-content">
-                                                    {message.content}
-                                                </div>
+                                            <div>{message.content}</div>
+
+                                            {"attachmentUrl" in message && message.attachmentUrl && (
+                                                <>
+                                                    {message.attachmentContentType?.startsWith("image/") ? (
+                                                        <img
+                                                            src={`https://localhost:7039${message.attachmentUrl}`}
+                                                            alt={message.attachmentFileName ?? "Attachment"}
+                                                            style={styles.messageImage}
+                                                        />
+                                                    ) : (
+                                                        <a
+                                                            href={`https://localhost:7039${message.attachmentUrl}`}
+                                                            target="_blank"
+                                                            rel="noreferrer"
+                                                            style={styles.fileLink}
+                                                        >
+                                                            📄 {message.attachmentFileName ?? "Download file"}
+                                                        </a>
+                                                    )}
+                                                </>
                                             )}
 
-                                            {"attachmentUrl" in message &&
-                                                message.attachmentUrl && (
-                                                    <>
-                                                        {message.attachmentContentType?.startsWith(
-                                                            "image/"
-                                                        ) ? (
-                                                            <img
-                                                                src={`${API_URL}${message.attachmentUrl}`}
-                                                                alt={
-                                                                    message.attachmentFileName ??
-                                                                    "Attachment"
-                                                                }
-                                                                className="message-image"
-                                                            />
-                                                        ) : (
-                                                            <a
-                                                                href={`${API_URL}${message.attachmentUrl}`}
-                                                                target="_blank"
-                                                                rel="noreferrer"
-                                                                className="file-link"
-                                                            >
-                                                                📄{" "}
-                                                                {message.attachmentFileName ??
-                                                                    "Download file"}
-                                                            </a>
-                                                        )}
-                                                    </>
-                                                )}
-
-                                            <div className="message-time">
+                                            <div style={styles.messageTime}>
                                                 {"isOptimistic" in message
                                                     ? "Sending..."
-                                                    : new Date(
-                                                          message.createdAt
-                                                      ).toLocaleTimeString([], {
-                                                          hour: "2-digit",
-                                                          minute: "2-digit",
-                                                      })}
+                                                    : new Date(message.createdAt).toLocaleTimeString([], {
+                                                        hour: "2-digit",
+                                                        minute: "2-digit",
+                                                    })}
                                             </div>
                                         </div>
                                     </div>
@@ -583,7 +459,7 @@ export function ChatPage() {
                     </div>
 
                     {selectedConversation && typingUserIds.length > 0 && (
-                        <div className="typing-indicator">
+                        <div style={styles.typingIndicator}>
                             {typingUserIds.length === 1
                                 ? "Someone is typing..."
                                 : `${typingUserIds.length} people are typing...`}
@@ -591,47 +467,44 @@ export function ChatPage() {
                     )}
 
                     {selectedConversation && (
-                        <footer className="chat-input-bar">
-                            <div className="chat-input-inner">
-                                <input
-                                    ref={fileInputRef}
-                                    type="file"
-                                    accept="image/*,.pdf,.txt"
-                                    onChange={handleFileSelected}
-                                    style={{ display: "none" }}
-                                />
+                        <footer style={styles.messageInputArea}>
+                            <input
+                                ref={fileInputRef}
+                                type="file"
+                                accept="image/*,.pdf,.txt"
+                                onChange={handleFileSelected}
+                                style={{ display: "none" }}
+                            />
 
-                                <button
-                                    type="button"
-                                    onClick={() => fileInputRef.current?.click()}
-                                    disabled={isUploading}
-                                    className="chat-attach"
-                                >
-                                    {isUploading ? "…" : "📎"}
-                                </button>
+                            <button
+                                type="button"
+                                onClick={() => fileInputRef.current?.click()}
+                                disabled={isUploading}
+                                style={styles.attachButton}
+                            >
+                                {isUploading ? "..." : "📎"}
+                            </button>
 
-                                <textarea
-                                    placeholder="Type a message..."
-                                    value={messageText}
-                                    onChange={(event) =>
-                                        handleMessageTextChange(event.target.value)
+                            <textarea
+                                placeholder="Type a message..."
+                                value={messageText}
+                                onChange={(event) => handleMessageTextChange(event.target.value)}
+                                onKeyDown={(event) => {
+                                    if (event.key === "Enter" && !event.shiftKey) {
+                                        event.preventDefault();
+                                        handleSendMessage();
                                     }
-                                    onKeyDown={(event) => {
-                                        if (event.key === "Enter" && !event.shiftKey) {
-                                            event.preventDefault();
-                                            handleSendMessage();
-                                        }
-                                    }}
-                                />
+                                }}
+                                style={styles.messageInput}
+                            />
 
-                                <button
-                                    onClick={handleSendMessage}
-                                    disabled={isSending || !isConnected}
-                                    className="chat-send"
-                                >
-                                    Send
-                                </button>
-                            </div>
+                            <button
+                                onClick={handleSendMessage}
+                                disabled={isSending || !isConnected}
+                                style={styles.sendButton}
+                            >
+                                Send
+                            </button>
                         </footer>
                     )}
                 </section>
@@ -663,3 +536,242 @@ export function ChatPage() {
         </>
     );
 }
+
+const styles: Record<string, React.CSSProperties> = {
+    container: {
+        height: "calc(100vh - 112px)",
+        display: "grid",
+        gridTemplateColumns: "320px 1fr",
+        gap: 16,
+    },
+    sidebar: {
+        background: "white",
+        borderRadius: 12,
+        padding: 16,
+        overflow: "hidden",
+        display: "flex",
+        flexDirection: "column",
+    },
+    sidebarHeader: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+    },
+    connectionBadge: {
+        fontSize: 12,
+        fontWeight: 700,
+        padding: "4px 8px",
+        borderRadius: 999,
+    },
+    searchBox: {
+        position: "relative",
+        marginBottom: 16,
+    },
+    input: {
+        width: "100%",
+        padding: 12,
+        borderRadius: 8,
+        border: "1px solid #d1d5db",
+    },
+    searchResults: {
+        position: "absolute",
+        top: 48,
+        left: 0,
+        right: 0,
+        background: "white",
+        border: "1px solid #e5e7eb",
+        borderRadius: 8,
+        boxShadow: "0 10px 25px rgba(0,0,0,0.12)",
+        zIndex: 10,
+        overflow: "hidden",
+    },
+    searchResultItem: {
+        width: "100%",
+        padding: 12,
+        background: "white",
+        border: "none",
+        textAlign: "left",
+        cursor: "pointer",
+        display: "flex",
+        flexDirection: "column",
+        gap: 4,
+    },
+    smallText: {
+        fontSize: 12,
+        color: "#6b7280",
+    },
+    conversationList: {
+        display: "flex",
+        flexDirection: "column",
+        gap: 8,
+        overflowY: "auto",
+    },
+    conversationItem: {
+        border: "1px solid #e5e7eb",
+        borderRadius: 10,
+        padding: 12,
+        textAlign: "left",
+        cursor: "pointer",
+    },
+    conversationHeader: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        marginBottom: 4,
+    },
+    onlineDot: {
+        color: "#16a34a",
+        fontSize: 14,
+    },
+    lastMessage: {
+        fontSize: 13,
+        color: "#6b7280",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap",
+        display: "block",
+    },
+    chatPanel: {
+        background: "white",
+        borderRadius: 12,
+        display: "flex",
+        flexDirection: "column",
+        overflow: "hidden",
+    },
+    chatHeader: {
+        padding: "16px 20px",
+        borderBottom: "1px solid #e5e7eb",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+    },
+    messagesArea: {
+        flex: 1,
+        padding: 20,
+        overflowY: "auto",
+        background: "#f9fafb",
+    },
+    emptyState: {
+        color: "#6b7280",
+    },
+    messageRow: {
+        display: "flex",
+        marginBottom: 12,
+    },
+    messageBubble: {
+        maxWidth: "65%",
+        padding: "10px 12px",
+        borderRadius: 14,
+    },
+    messageSender: {
+        fontSize: 12,
+        fontWeight: 700,
+        marginBottom: 4,
+    },
+    messageTime: {
+        fontSize: 11,
+        opacity: 0.8,
+        marginTop: 6,
+        textAlign: "right",
+    },
+    typingIndicator: {
+        padding: "8px 16px",
+        fontSize: 13,
+        color: "#6b7280",
+        borderTop: "1px solid #e5e7eb",
+    },
+    messageInputArea: {
+        padding: 16,
+        borderTop: "1px solid #e5e7eb",
+        display: "flex",
+        gap: 12,
+    },
+    messageInput: {
+        flex: 1,
+        padding: 12,
+        borderRadius: 8,
+        border: "1px solid #d1d5db",
+        resize: "none",
+        minHeight: 44,
+        maxHeight: 120,
+    },
+    sendButton: {
+        padding: "0 20px",
+        borderRadius: 8,
+        border: "none",
+        background: "#2563eb",
+        color: "white",
+        cursor: "pointer",
+    },
+    callButton: {
+        padding: "8px 12px",
+        border: "none",
+        borderRadius: 8,
+        background: "#16a34a",
+        color: "white",
+        cursor: "pointer",
+    },
+    conversationFooter: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        gap: 8,
+    },
+    unreadBadge: {
+        minWidth: 22,
+        height: 22,
+        borderRadius: 999,
+        background: "#2563eb",
+        color: "white",
+        fontSize: 12,
+        fontWeight: 700,
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "0 6px",
+    },
+    attachButton: {
+        width: 44,
+        borderRadius: 8,
+        border: "1px solid #d1d5db",
+        background: "white",
+        cursor: "pointer",
+    },
+    messageImage: {
+        display: "block",
+        maxWidth: 260,
+        maxHeight: 260,
+        borderRadius: 10,
+        marginTop: 8,
+        objectFit: "cover",
+    },
+    fileLink: {
+        display: "inline-block",
+        marginTop: 8,
+        color: "inherit",
+        textDecoration: "underline",
+    },
+    messageSenderRow: {
+        display: "flex",
+        alignItems: "center",
+        gap: 6,
+        marginBottom: 4,
+    },
+    smallAvatar: {
+        width: 22,
+        height: 22,
+        borderRadius: "50%",
+        objectFit: "cover",
+    },
+    smallAvatarPlaceholder: {
+        width: 22,
+        height: 22,
+        borderRadius: "50%",
+        background: "#9ca3af",
+        color: "white",
+        fontSize: 11,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+    },
+};

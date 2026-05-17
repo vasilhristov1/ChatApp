@@ -13,22 +13,25 @@ export function AppLayout() {
         navigate("/login");
     };
 
-    const avatarUrl = user?.avatarUrl ? `${API_URL}${user.avatarUrl}` : null;
+    const avatarUrl = user?.avatarUrl
+        ? `${API_URL}${user.avatarUrl}`
+        : null;
 
     return (
-        <div style={{ minHeight: "100vh", background: "#08090d" }}>
+        <div style={{ minHeight: "100vh", background: "#f5f5f5" }}>
             <header
                 style={{
                     height: 72,
-                    background: "#08090d",
+                    background: "#111827",
                     color: "white",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "space-between",
-                    padding: "0 20px",
-                    borderBottom: "1px solid rgba(255,255,255,0.08)",
+                    padding: "0 24px",
+                    boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
                 }}
             >
+                {/* Left side - Logo + App name */}
                 <Link
                     to="/chat"
                     style={{
@@ -43,27 +46,29 @@ export function AppLayout() {
                         src="/logo.png"
                         alt="ChatApp Logo"
                         style={{
-                            width: 38,
-                            height: 38,
+                            width: 42,
+                            height: 42,
                             objectFit: "contain",
                         }}
                     />
 
                     <strong
                         style={{
-                            fontSize: 22,
-                            fontWeight: 800,
+                            fontSize: 24,
+                            fontWeight: 700,
+                            letterSpacing: 0.5,
                         }}
                     >
                         ChatApp
                     </strong>
                 </Link>
 
+                {/* Right side - Profile + Logout */}
                 <div
                     style={{
                         display: "flex",
                         alignItems: "center",
-                        gap: 14,
+                        gap: 18,
                     }}
                 >
                     <Link
@@ -74,6 +79,9 @@ export function AppLayout() {
                             gap: 10,
                             textDecoration: "none",
                             color: "white",
+                            padding: "6px 10px",
+                            borderRadius: 999,
+                            transition: "background 0.2s ease",
                         }}
                     >
                         {avatarUrl ? (
@@ -81,42 +89,52 @@ export function AppLayout() {
                                 src={avatarUrl}
                                 alt={user?.username ?? "User"}
                                 style={{
-                                    width: 36,
-                                    height: 36,
+                                    width: 38,
+                                    height: 38,
                                     borderRadius: "50%",
                                     objectFit: "cover",
+                                    border: "2px solid rgba(255,255,255,0.25)",
                                 }}
                             />
                         ) : (
                             <div
                                 style={{
-                                    width: 36,
-                                    height: 36,
+                                    width: 38,
+                                    height: 38,
                                     borderRadius: "50%",
                                     background:
-                                        "linear-gradient(135deg, #7c3aed, #6366f1)",
+                                        "linear-gradient(135deg, #3b82f6, #8b5cf6)",
                                     display: "flex",
                                     alignItems: "center",
                                     justifyContent: "center",
-                                    fontWeight: 800,
+                                    fontWeight: 700,
+                                    fontSize: 16,
+                                    color: "white",
                                 }}
                             >
                                 {user?.username?.[0]?.toUpperCase() ?? "U"}
                             </div>
                         )}
 
-                        <span style={{ fontWeight: 700 }}>{user?.username}</span>
+                        <span
+                            style={{
+                                fontWeight: 600,
+                                fontSize: 15,
+                            }}
+                        >
+                            {user?.username}
+                        </span>
                     </Link>
 
                     <button
                         onClick={handleLogout}
                         style={{
-                            padding: "9px 14px",
-                            borderRadius: 10,
+                            padding: "10px 16px",
+                            borderRadius: 8,
                             border: "none",
                             background: "#ef4444",
                             color: "white",
-                            fontWeight: 700,
+                            fontWeight: 600,
                             cursor: "pointer",
                         }}
                     >
@@ -125,7 +143,13 @@ export function AppLayout() {
                 </div>
             </header>
 
-            <main>
+            <main
+                style={{
+                    padding: 24,
+                    maxWidth: 1600,
+                    margin: "0 auto",
+                }}
+            >
                 <Outlet />
             </main>
         </div>
