@@ -1,0 +1,19 @@
+{
+  "Version": 1,
+  "Hash": "MHiFsxiJAWLKrz1MmXLZyLKOdU5hEErXASvgAv3VAyw=",
+  "Source": "ChatApp.Api",
+  "BasePath": "_content/ChatApp.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "ChatApp.Api/wwwroot",
+      "Source": "ChatApp.Api",
+      "ContentRoot": "/Users/vasil.hristov/Desktop/Vasil/ChatApp/backend/ChatApp.Api/wwwroot/",
+      "BasePath": "_content/ChatApp.Api",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": []
+}

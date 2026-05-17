@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: chat_app_postgres
+    restart: always
+    environment:
+      POSTGRES_DB: chat_app_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - chat_app_postgres_data:/var/lib/postgresql/data
+
+volumes:
+  chat_app_postgres_data:

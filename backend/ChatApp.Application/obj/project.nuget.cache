@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "y47/rLZmrf4=",
+  "success": true,
+  "projectFilePath": "/Users/vasil.hristov/Desktop/Vasil/ChatApp/backend/ChatApp.Application/ChatApp.Application.csproj",
+  "expectedPackageFiles": [
+    "/Users/vasil.hristov/.nuget/packages/fluentvalidation/12.1.1/fluentvalidation.12.1.1.nupkg.sha512",
+    "/Users/vasil.hristov/.nuget/packages/microsoft.aspnetcore.http.features/5.0.17/microsoft.aspnetcore.http.features.5.0.17.nupkg.sha512",
+    "/Users/vasil.hristov/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/10.0.8/microsoft.extensions.dependencyinjection.abstractions.10.0.8.nupkg.sha512",
+    "/Users/vasil.hristov/.nuget/packages/microsoft.extensions.options/10.0.8/microsoft.extensions.options.10.0.8.nupkg.sha512",
+    "/Users/vasil.hristov/.nuget/packages/microsoft.extensions.primitives/10.0.8/microsoft.extensions.primitives.10.0.8.nupkg.sha512",
+    "/Users/vasil.hristov/.nuget/packages/system.io.pipelines/5.0.2/system.io.pipelines.5.0.2.nupkg.sha512"
+  ],
+  "logs": []
+}

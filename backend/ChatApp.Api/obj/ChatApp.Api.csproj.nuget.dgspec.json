@@ -1,0 +1,339 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/vasil.hristov/Desktop/Vasil/ChatApp/backend/ChatApp.Api/ChatApp.Api.csproj": {}
+  },
+  "projects": {
+    "/Users/vasil.hristov/Desktop/Vasil/ChatApp/backend/ChatApp.Api/ChatApp.Api.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/vasil.hristov/Desktop/Vasil/ChatApp/backend/ChatApp.Api/ChatApp.Api.csproj",
+        "projectName": "ChatApp.Api",
+        "projectPath": "/Users/vasil.hristov/Desktop/Vasil/ChatApp/backend/ChatApp.Api/ChatApp.Api.csproj",
+        "packagesPath": "/Users/vasil.hristov/.nuget/packages/",
+        "outputPath": "/Users/vasil.hristov/Desktop/Vasil/ChatApp/backend/ChatApp.Api/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/vasil.hristov/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "/Users/vasil.hristov/Desktop/Vasil/ChatApp/backend/ChatApp.Application/ChatApp.Application.csproj": {
+                "projectPath": "/Users/vasil.hristov/Desktop/Vasil/ChatApp/backend/ChatApp.Application/ChatApp.Application.csproj"
+              },
+              "/Users/vasil.hristov/Desktop/Vasil/ChatApp/backend/ChatApp.Infrastructure/ChatApp.Infrastructure.csproj": {
+                "projectPath": "/Users/vasil.hristov/Desktop/Vasil/ChatApp/backend/ChatApp.Infrastructure/ChatApp.Infrastructure.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "FluentValidation.AspNetCore": {
+              "target": "Package",
+              "version": "[11.3.1, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[8.0.27, )"
+            },
+            "Microsoft.AspNetCore.OpenApi": {
+              "target": "Package",
+              "version": "[8.0.17, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.27, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[8.0.11, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.6.2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.411/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/vasil.hristov/Desktop/Vasil/ChatApp/backend/ChatApp.Application/ChatApp.Application.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/vasil.hristov/Desktop/Vasil/ChatApp/backend/ChatApp.Application/ChatApp.Application.csproj",
+        "projectName": "ChatApp.Application",
+        "projectPath": "/Users/vasil.hristov/Desktop/Vasil/ChatApp/backend/ChatApp.Application/ChatApp.Application.csproj",
+        "packagesPath": "/Users/vasil.hristov/.nuget/packages/",
+        "outputPath": "/Users/vasil.hristov/Desktop/Vasil/ChatApp/backend/ChatApp.Application/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/vasil.hristov/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "/Users/vasil.hristov/Desktop/Vasil/ChatApp/backend/ChatApp.Domain/ChatApp.Domain.csproj": {
+                "projectPath": "/Users/vasil.hristov/Desktop/Vasil/ChatApp/backend/ChatApp.Domain/ChatApp.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "FluentValidation": {
+              "target": "Package",
+              "version": "[12.1.1, )"
+            },
+            "Microsoft.AspNetCore.Http.Features": {
+              "target": "Package",
+              "version": "[5.0.17, )"
+            },
+            "Microsoft.Extensions.Options": {
+              "target": "Package",
+              "version": "[10.0.8, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.411/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/vasil.hristov/Desktop/Vasil/ChatApp/backend/ChatApp.Domain/ChatApp.Domain.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/vasil.hristov/Desktop/Vasil/ChatApp/backend/ChatApp.Domain/ChatApp.Domain.csproj",
+        "projectName": "ChatApp.Domain",
+        "projectPath": "/Users/vasil.hristov/Desktop/Vasil/ChatApp/backend/ChatApp.Domain/ChatApp.Domain.csproj",
+        "packagesPath": "/Users/vasil.hristov/.nuget/packages/",
+        "outputPath": "/Users/vasil.hristov/Desktop/Vasil/ChatApp/backend/ChatApp.Domain/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/vasil.hristov/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.411/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/vasil.hristov/Desktop/Vasil/ChatApp/backend/ChatApp.Infrastructure/ChatApp.Infrastructure.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/vasil.hristov/Desktop/Vasil/ChatApp/backend/ChatApp.Infrastructure/ChatApp.Infrastructure.csproj",
+        "projectName": "ChatApp.Infrastructure",
+        "projectPath": "/Users/vasil.hristov/Desktop/Vasil/ChatApp/backend/ChatApp.Infrastructure/ChatApp.Infrastructure.csproj",
+        "packagesPath": "/Users/vasil.hristov/.nuget/packages/",
+        "outputPath": "/Users/vasil.hristov/Desktop/Vasil/ChatApp/backend/ChatApp.Infrastructure/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/vasil.hristov/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "/Users/vasil.hristov/Desktop/Vasil/ChatApp/backend/ChatApp.Application/ChatApp.Application.csproj": {
+                "projectPath": "/Users/vasil.hristov/Desktop/Vasil/ChatApp/backend/ChatApp.Application/ChatApp.Application.csproj"
+              },
+              "/Users/vasil.hristov/Desktop/Vasil/ChatApp/backend/ChatApp.Domain/ChatApp.Domain.csproj": {
+                "projectPath": "/Users/vasil.hristov/Desktop/Vasil/ChatApp/backend/ChatApp.Domain/ChatApp.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "BCrypt.Net-Next": {
+              "target": "Package",
+              "version": "[4.2.0, )"
+            },
+            "FluentValidation.DependencyInjectionExtensions": {
+              "target": "Package",
+              "version": "[12.1.1, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[8.0.27, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.27, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.27, )"
+            },
+            "Microsoft.Extensions.Options": {
+              "target": "Package",
+              "version": "[10.0.8, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[8.0.11, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[8.18.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.411/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
