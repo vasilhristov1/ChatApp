@@ -5,8 +5,10 @@ import axios, {
 import { useAuthStore } from "../store/authStore";
 import type { AuthResponse } from "../types/auth";
 
+import { API_URL } from "../config";
+
 export const axiosClient = axios.create({
-  baseURL: "https://localhost:7039/api",
+  baseURL: API_URL,
   headers: {
     "Content-Type": "application/json",
   },

@@ -1,10 +1,9 @@
 import * as signalR from "@microsoft/signalr";
-
-const HUB_URL = "https://localhost:7039/hubs/call";
+import { CALL_HUB_URL } from "../config";
 
 export function createCallConnection(accessToken: string) {
   return new signalR.HubConnectionBuilder()
-    .withUrl(HUB_URL, {
+    .withUrl(CALL_HUB_URL, {
       accessTokenFactory: () => accessToken,
     })
     .withAutomaticReconnect()
