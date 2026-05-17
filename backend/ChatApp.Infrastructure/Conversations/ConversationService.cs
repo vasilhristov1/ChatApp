@@ -220,6 +220,38 @@ public class ConversationService : IConversationService
             .ToList();
     }
 
+    public async Task DeleteConversationAsync(Guid userId, Guid conversationId)
+    {
+        var conversation = await _dbContext.Conversations
+            .Include(c => c.Members)
+            .FirstOrDefaultAsync(c => c.Id == conversationId);
+
+        if (conversation == null)
+        {
+            throw new KeyNotFoundException("Conversation not found.");
+        }
+
+        var currentMember = conversation.Members
+            .FirstOrDefault(m => m.UserId == userId);
+
+        if (currentMember == null)
+        {
+            throw new UnauthorizedAccessException(
+                "You are not a member of this conversation.");
+        }
+
+        if (conversation.Type == ConversationType.Group &&
+            currentMember.Role != ConversationRole.Owner)
+        {
+            throw new UnauthorizedAccessException(
+                "Only the group owner can delete this conversation.");
+        }
+
+        _dbContext.Conversations.Remove(conversation);
+
+        await _dbContext.SaveChangesAsync();
+    }
+
     private static ConversationResponse MapConversation(
         Conversation conversation,
         Guid currentUserId)

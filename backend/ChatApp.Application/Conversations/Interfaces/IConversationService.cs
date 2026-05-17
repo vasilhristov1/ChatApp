@@ -14,5 +14,5 @@ public interface IConversationService
     Task<ConversationResponse> CreateGroupConversationAsync(Guid currentUserId, CreateGroupConversationRequest request);
 
     Task<List<MessageResponse>> GetMessagesAsync(Guid userId, Guid conversationId, int page, int pageSize);
-
+    Task DeleteConversationAsync(Guid userId, Guid conversationId);
 }

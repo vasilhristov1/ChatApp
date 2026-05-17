@@ -77,4 +77,14 @@ public class ConversationsController : ControllerBase
 
         return Ok(messages);
     }
+
+    [HttpDelete("{conversationId:guid}")]
+    public async Task<IActionResult> DeleteConversation(Guid conversationId)
+    {
+        var userId = User.GetUserId();
+
+        await _conversationService.DeleteConversationAsync(userId, conversationId);
+
+        return NoContent();
+    }
 }

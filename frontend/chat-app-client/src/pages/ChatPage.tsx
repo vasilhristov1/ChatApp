@@ -260,6 +260,29 @@ export function ChatPage() {
         }
     };
 
+    const handleDeleteConversation = async (
+        event: React.MouseEvent<HTMLButtonElement>,
+        conversationId: string
+    ) => {
+        event.stopPropagation();
+
+        const confirmed = window.confirm(
+            "Are you sure you want to delete this conversation?"
+        );
+
+        if (!confirmed) {
+            return;
+        }
+
+        await conversationsApi.deleteConversation(conversationId);
+
+        if (selectedConversation?.id === conversationId) {
+            setSelectedConversation(null);
+        }
+
+        await refetchConversations();
+    };
+
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages.length, selectedConversation?.id]);
@@ -341,9 +364,22 @@ export function ChatPage() {
                                             {conversation.lastMessage ?? "No messages yet"}
                                         </span>
 
-                                        {conversation.unreadCount > 0 && (
-                                            <span style={styles.unreadBadge}>{conversation.unreadCount}</span>
-                                        )}
+                                        <div style={styles.conversationActions}>
+                                            {conversation.unreadCount > 0 && (
+                                                <span style={styles.unreadBadge}>{conversation.unreadCount}</span>
+                                            )}
+
+                                            <button
+                                                type="button"
+                                                onClick={(event) =>
+                                                    handleDeleteConversation(event, conversation.id)
+                                                }
+                                                style={styles.deleteConversationButton}
+                                                title="Delete conversation"
+                                            >
+                                                ✕
+                                            </button>
+                                        </div>
                                     </div>
                                 </button>
                             );
@@ -771,6 +807,25 @@ const styles: Record<string, React.CSSProperties> = {
         color: "white",
         fontSize: 11,
         display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    conversationActions: {
+        display: "flex",
+        alignItems: "center",
+        gap: 8,
+    },
+    deleteConversationButton: {
+        width: 24,
+        height: 24,
+        borderRadius: "50%",
+        border: "none",
+        background: "#ef4444",
+        color: "white",
+        fontSize: 12,
+        fontWeight: 700,
+        cursor: "pointer",
+        display: "inline-flex",
         alignItems: "center",
         justifyContent: "center",
     },
