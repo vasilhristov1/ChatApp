@@ -13,3 +13,4 @@
 /Users/vasil.hristov/Desktop/Vasil/ChatApp/backend/ChatApp.Application/obj/Debug/net8.0/refint/ChatApp.Application.dll
 /Users/vasil.hristov/Desktop/Vasil/ChatApp/backend/ChatApp.Application/obj/Debug/net8.0/ChatApp.Application.pdb
 /Users/vasil.hristov/Desktop/Vasil/ChatApp/backend/ChatApp.Application/obj/Debug/net8.0/ref/ChatApp.Application.dll
+/Users/vasil.hristov/Desktop/Vasil/ChatApp/backend/ChatApp.Application/obj/Debug/net8.0/ChatApp.Application.sourcelink.json

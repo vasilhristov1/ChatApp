@@ -129,3 +129,4 @@
 /Users/vasil.hristov/Desktop/Vasil/ChatApp/backend/ChatApp.Api/bin/Debug/net8.0/FluentValidation.AspNetCore.dll
 /Users/vasil.hristov/Desktop/Vasil/ChatApp/backend/ChatApp.Api/bin/Debug/net8.0/FluentValidation.DependencyInjectionExtensions.dll
 /Users/vasil.hristov/Desktop/Vasil/ChatApp/backend/ChatApp.Api/bin/Debug/net8.0/ChatApp.Api.staticwebassets.runtime.json
+/Users/vasil.hristov/Desktop/Vasil/ChatApp/backend/ChatApp.Api/obj/Debug/net8.0/ChatApp.Api.sourcelink.json

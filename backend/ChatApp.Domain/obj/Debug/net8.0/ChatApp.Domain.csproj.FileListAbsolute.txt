@@ -9,3 +9,4 @@
 /Users/vasil.hristov/Desktop/Vasil/ChatApp/backend/ChatApp.Domain/obj/Debug/net8.0/refint/ChatApp.Domain.dll
 /Users/vasil.hristov/Desktop/Vasil/ChatApp/backend/ChatApp.Domain/obj/Debug/net8.0/ChatApp.Domain.pdb
 /Users/vasil.hristov/Desktop/Vasil/ChatApp/backend/ChatApp.Domain/obj/Debug/net8.0/ref/ChatApp.Domain.dll
+/Users/vasil.hristov/Desktop/Vasil/ChatApp/backend/ChatApp.Domain/obj/Debug/net8.0/ChatApp.Domain.sourcelink.json

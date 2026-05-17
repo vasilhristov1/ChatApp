@@ -237,6 +237,15 @@ export function useCallConnection({
             const peerConnection = createPeerConnection(call);
             attachLocalTracks(peerConnection, stream);
 
+            // Only the caller creates the offer.
+            if (call.callerId !== currentUserId) {
+                return;
+            }
+
+            if (peerConnection.signalingState !== "stable") {
+                return;
+            }
+
             const offer = await peerConnection.createOffer();
             await peerConnection.setLocalDescription(offer);
 
@@ -287,6 +296,14 @@ export function useCallConnection({
             const peerConnection = peerConnectionRef.current;
 
             if (!peerConnection) {
+                return;
+            }
+
+            if (peerConnection.signalingState !== "have-local-offer") {
+                console.warn(
+                    "Skipping answer because signaling state is:",
+                    peerConnection.signalingState
+                );
                 return;
             }
 
