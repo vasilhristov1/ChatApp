@@ -11,3 +11,11 @@ button,
 input {
   font: inherit;
 }
+
+@media (max-width: 640px) {
+  input,
+  button,
+  textarea {
+    font-size: 16px !important;
+  }
+}
