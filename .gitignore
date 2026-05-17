@@ -1,0 +1,101 @@
+# =========================
+# OS / Editor
+# =========================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# =========================
+# Logs
+# =========================
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# =========================
+# Environment files
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# Node / Frontend
+# =========================
+node_modules/
+dist/
+build/
+coverage/
+.frontend-cache/
+.vite/
+*.tsbuildinfo
+
+# =========================
+# React / Vite specific
+# =========================
+frontend/**/node_modules/
+frontend/**/dist/
+frontend/**/.vite/
+
+# =========================
+# .NET / Backend
+# =========================
+bin/
+obj/
+[Bb]in/
+[Oo]bj/
+*.user
+*.suo
+*.userprefs
+*.csproj.user
+*.dbmdl
+*.pdb
+*.cache
+*.mdb
+*.opendb
+*.VC.db
+*.snupkg
+
+# =========================
+# Rider / Visual Studio
+# =========================
+*.DotSettings.user
+
+# =========================
+# ASP.NET Secrets
+# =========================
+secrets.json
+appsettings.Development.json
+appsettings.Local.json
+
+# =========================
+# EF Core local DB / SQLite
+# =========================
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# =========================
+# Uploads / generated files
+# =========================
+backend/ChatApp.Api/wwwroot/uploads/
+backend/ChatApp.Api/wwwroot/avatars/
+backend/ChatApp.Api/wwwroot/messages/
+
+# =========================
+# Docker
+# =========================
+docker-compose.override.yml
+
+# =========================
+# Render / deployment temp
+# =========================
+.render/
