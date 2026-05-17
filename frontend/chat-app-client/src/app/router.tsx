@@ -6,11 +6,16 @@ import { LoginPage } from "../pages/LoginPage";
 import { RegisterPage } from "../pages/RegisterPage";
 import { HomePage } from "../pages/HomePage";
 import { ProfilePage } from "../pages/ProfilePage";
+import InitialPage from "../pages/InitialPage";
 
 export const router = createBrowserRouter([
     {
         element: <PublicRoute />,
         children: [
+            {
+                path: "/",
+                element: <InitialPage />,
+            },
             {
                 path: "/login",
                 element: <LoginPage />,
@@ -28,7 +33,7 @@ export const router = createBrowserRouter([
                 element: <AppLayout />,
                 children: [
                     {
-                        path: "/",
+                        path: "/chat",
                         element: <HomePage />,
                     },
                     {
